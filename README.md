@@ -1,2 +1,2 @@
-# microblogger
-Building a microblog site from scratch to learn stuff :| 
+# picoblogger
+Building a tiny blog site from scratch to learn stuff :| 
