@@ -3,22 +3,24 @@ package main
 import (
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 // define post struct
 type blogpost struct {
-	ID      string `json:"id"`
-	Author  string `json:"author"`
-	Content string `json:"content"`
+	ID        string    `json:"id"`
+	Author    string    `json:"author"`
+	Content   string    `json:"content"`
+	Timestamp time.Time `json:"timestamp"`
 }
 
 // albums slice to seed record album data.
 var blogposts = []blogpost{
-	{ID: "1", Author: "alex", Content: "this is my first post"},
-	{ID: "2", Author: "alex", Content: "this is my second post"},
-	{ID: "3", Author: "alex", Content: "this is my third post"},
+	{ID: "1", Author: "alex", Content: "this is my first post", Timestamp: time.Now()},
+	{ID: "2", Author: "alex", Content: "this is my second post", Timestamp: time.Now()},
+	{ID: "3", Author: "alex", Content: "this is my third post", Timestamp: time.Now()},
 }
 
 // set default port number if env var $PORT isn't set
@@ -66,6 +68,8 @@ func postBlogposts(c *gin.Context) {
 	if err := c.BindJSON(&newBlogpost); err != nil {
 		return
 	}
+
+	newBlogpost.Timestamp = time.Now()
 
 	// Add the new album to the slice.
 	blogposts = append(blogposts, newBlogpost)
