@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -70,6 +71,7 @@ func postBlogposts(c *gin.Context) {
 	}
 
 	newBlogpost.Timestamp = time.Now()
+	newBlogpost.ID = strconv.Itoa(len(blogposts) + 1) // mocking incrementing of ids of posts
 
 	// Add the new album to the slice.
 	blogposts = append(blogposts, newBlogpost)
