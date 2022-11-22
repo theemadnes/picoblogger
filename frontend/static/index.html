@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <title>picoBlogger dashboard</title>
+    <script>function submission() {
+        // Creating a XHR object
+        //console.log("testing");
+        let payload = document.getElementById("postcontent").value;
+        console.log(payload);
+        //let payload = "12345";
+        //console.log(payload);
+        // create a JSON object
+        const json = {
+            author: 'alex',
+            content: payload
+        }
+        var data = JSON.stringify(json);
+        console.log(data);
+        let xhr = new XMLHttpRequest();
+        let url = 'https://picoblogger-4uotx33u2a-uc.a.run.app/blogposts';
+
+        xhr.onload = () => {
+        // print JSON response
+        if (xhr.status >= 200 && xhr.status < 300) {
+            // parse JSON
+            const response = JSON.parse(xhr.responseText)
+            console.log(response)
+        }
+        }
+        
+
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.send(data);
+
+    };</script>
+  </head>
+  <body>
+    <form name="frm1" method="post" onsubmit="submission()">
+        <input type="text" id="postcontent" name="postcontent">
+        <input type="submit" value="Submit"></form>
+    <ul id="myList"></ul>
+    <script>
+
+        let displayList = [];
+
+        fetch(`https://picoblogger-4uotx33u2a-uc.a.run.app/blogposts`)
+        .then(function(response){
+            return response.json()
+        })
+        .then((data) => {
+            console.log(data);
+            var list = document.getElementById("myList");
+            data.forEach((item) => {
+                console.log(item);
+                displayList.push(item.author + " " + item.content + " " + item.timestamp);
+                let li = document.createElement("li");
+                li.innerText = item.author + ": " + item.content + " - " + item.timestamp;
+                list.appendChild(li);
+            })
+            //console.log(displayList)
+        })
+        .catch((err) => {
+            console.log(`Error fetching: ${err}`)
+        });
+
+         
+        
+    </script>
+  </body>
+</html>
