@@ -7,6 +7,10 @@
         //console.log("testing");
         let payload = document.getElementById("postcontent").value;
         console.log(payload);
+        if (payload.length === 0) {
+            console.log("Empty payload - not posting");
+            return;
+        }
         //let payload = "12345";
         //console.log(payload);
         // create a JSON object
