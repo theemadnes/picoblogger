@@ -11,7 +11,8 @@ RUN go mod download
 
 # Copy local code to the container image.
 COPY . ./
-COPY ./static ./static/
+#COPY ./static ./static/
+COPY ./templates ./templates/
 
 # Build the binary.
 RUN CGO_ENABLED=0 go build -v -o server
@@ -30,7 +31,7 @@ FROM cgr.dev/chainguard/static:latest
 # Copy the binary to the production image from the builder stage.
 #COPY --from=builder /app/server /app/server
 COPY --from=builder /app/server .
-COPY --from=builder /app/static/ ./static/
+COPY --from=builder /app/templates/ ./templates/
 
 # Run the web service on container startup.
 #CMD ["/app/server"]
