@@ -69,11 +69,17 @@ func main() {
 	router.Run("0.0.0.0:" + port) // listen and serve on 0.0.0.0:8080 by default
 }
 
-// base path handler
+// base path handler - right now just using it to reset blog posts back to default
 func getBasepath(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, gin.H{
+	blogposts = []blogpost{
+		{ID: "1", Author: "alex", Content: "this is my first post", Timestamp: time.Now()},
+		{ID: "2", Author: "alex", Content: "this is my second post", Timestamp: time.Now()},
+		{ID: "3", Author: "alex", Content: "this is my third post", Timestamp: time.Now()},
+	}
+	/*c.IndentedJSON(http.StatusOK, gin.H{
 		"hello": "base path",
-	})
+	})*/
+	c.IndentedJSON(http.StatusOK, blogposts)
 }
 
 // getAlbums responds with the list of all albums as JSON.
