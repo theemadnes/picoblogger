@@ -37,6 +37,11 @@ func main() {
 		tmpl.Execute(w, data)
 	})
 
+	// handle javascript content serving
+	//fs := http.FileServer(http.Dir("./scripts"))
+	//http.Handle("/scripts/", fs)
+	http.Handle("/scripts/", http.StripPrefix("/scripts/", http.FileServer(http.Dir("./scripts"))))
+
 	log.Printf("Listening on :%s...", port)
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {

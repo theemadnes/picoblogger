@@ -1,121 +1,130 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <title>picoBlogger dashboard</title>
-    <script>
-        // https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
-        const evtSource = new EventSource("{{.SseServerUrl}}", { withCredentials: false } );
-
-        // select the eventTarget element
-        //let eventTarget = document.getElementById('eventTarget');
-
-        evtSource.onmessage = (event) => {
-        //const newElement = document.createElement("li");
-        //const eventList = document.getElementById("list");
-
-        //newElement.textContent = `message: ${event.data}`;
-        //eventList.appendChild(newElement);
-        console.log(event);
-        // parse JSON
-        const payload = JSON.parse(event.data);
-
-        if (payload['update']) {
-            document.getElementById('eventTarget').innerText = payload['update'];
-        }
-        
-        }
-
-        
-        evtSource.onerror = (err) => {
-        console.error("EventSource failed:", err);
-        };
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.js" defer></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.css" />
     <script>
     
-        // basic load of posts
-        function getPosts() {
-        let displayList = [];
+    // basic load of posts
+    function getPosts() {
+    let displayList = [];
 
-        fetch("{{.PicoBloggerApiUrl}}")
-        .then(function(response){
-            return response.json()
-        })
-        .then((data) => {
-            console.log(data);
-            var list = document.getElementById("myList");
-            list.innerHTML = ""; // hack to clear list on post to avoid appending
-            data.forEach((item) => {
-                console.log(item);
-                displayList.push(item.author + " " + item.content + " " + item.timestamp);
-                let li = document.createElement("li");
-                li.innerText = item.author + ": " + item.content + " - " + item.timestamp;
-                list.appendChild(li);
-            })
-            //console.log(displayList)
-        })
-        .catch((err) => {
-            console.log(`Error fetching: ${err}`)
-        });
-        };
-
-        //console.log("calling getPosts");
-        getPosts();
-         
-    
-        function submission(callback) {
-        // Creating a XHR object
-        //console.log("testing");
-        let payload = document.getElementById("postcontent").value;
-        console.log(payload);
-        if (payload.length === 0) {
-            console.log("Empty payload - not posting");
-            return;
-        }
-        //let payload = "12345";
-        //console.log(payload);
-        // create a JSON object
-        const json = {
-            author: 'alex',
-            content: payload
-        }
-        var data = JSON.stringify(json);
+    fetch("{{.PicoBloggerApiUrl}}")
+    .then(function(response){
+        return response.json()
+    })
+    .then((data) => {
         console.log(data);
-        let xhr = new XMLHttpRequest();
-        let url = "{{.PicoBloggerApiUrl}}";
+        var list = document.getElementById("myList");
+        list.innerHTML = ""; // hack to clear list on post to avoid appending
+        data.forEach((item) => {
+            console.log(item);
+            displayList.push(item.author + " " + item.content + " " + item.timestamp);
+            let li = document.createElement("li");
+            li.innerText = item.author + ": " + item.content + " - " + item.timestamp;
+            list.appendChild(li);
+        })
+        //console.log(displayList)
+    })
+    .catch((err) => {
+        console.log(`Error fetching: ${err}`)
+    });
+    };
 
-        xhr.onload = () => {
-        // print JSON response
-        if (xhr.status >= 200 && xhr.status < 300) {
-            // parse JSON
-            const response = JSON.parse(xhr.responseText)
-            console.log(response)
-            callback();
-        }
-        }
+    //console.log("calling getPosts");
+    getPosts();
         
 
-        xhr.open("POST", url);
-        xhr.setRequestHeader("Content-Type", "application/json");
+    function submission(callback) {
+    // Creating a XHR object
+    //console.log("testing");
+    let payload = document.getElementById("postcontent").value;
+    console.log(payload);
+    if (payload.length === 0) {
+        console.log("Empty payload - not posting");
+        return;
+    }
+    //let payload = "12345";
+    //console.log(payload);
+    // create a JSON object
+    const json = {
+        author: 'alex',
+        content: payload
+    }
+    var data = JSON.stringify(json);
+    console.log(data);
+    let xhr = new XMLHttpRequest();
+    let url = "{{.PicoBloggerApiUrl}}";
 
-        // send data and reload
-        xhr.send(data);
+    xhr.onload = () => {
+    // print JSON response
+    if (xhr.status >= 200 && xhr.status < 300) {
+        // parse JSON
+        const response = JSON.parse(xhr.responseText)
+        console.log(response)
+        callback();
+    }
+    }
+    
 
-        // clear field value
-        //frm = document.getElementsByName("frm1");
-        //console.log("trying to clear text");
-        //frm.innerText = "";
-        inputField = document.getElementById("postcontent");
-        inputField.value = "";
+    xhr.open("POST", url);
+    xhr.setRequestHeader("Content-Type", "application/json");
 
-        
+    // send data and reload
+    xhr.send(data);
 
+    // clear field value
+    //frm = document.getElementsByName("frm1");
+    //console.log("trying to clear text");
+    //frm.innerText = "";
+    inputField = document.getElementById("postcontent");
+    inputField.value = "";
     };</script>
+    <script type="module" src="scripts/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.js" defer></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.css" />
+    <script type="text/javascript" src="scripts/firebase-ui.js" defer></script>
+    <script>
+    // https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
+    const evtSource = new EventSource("{{.SseServerUrl}}", { withCredentials: false } );
+
+    // select the eventTarget element
+    //let eventTarget = document.getElementById('eventTarget');
+
+    evtSource.onmessage = (event) => {
+    //const newElement = document.createElement("li");
+    //const eventList = document.getElementById("list");
+
+    //newElement.textContent = `message: ${event.data}`;
+    //eventList.appendChild(newElement);
+    console.log(event);
+    // parse JSON
+    const payload = JSON.parse(event.data);
+
+    if (payload['update']) {
+        document.getElementById('eventTarget').innerText = payload['update'];
+    }
+
+    }
+
+
+    evtSource.onerror = (err) => {
+    console.error("EventSource failed:", err);
+    };
+    </script>
+    
   </head>
   <body>
+    
     <form name="frm1" method="post" onsubmit="return false" onclick="submission(getPosts)">
         <input type="text" id="postcontent" name="postcontent">
         <input type="submit" value="Submit"></form>
     <ul id="myList"></ul>
+    <div id="firebaseui-auth-container"></div>
     <footer>
         <p>If this page is working properly, below you should see an updating emoji every few seconds (by default):</p>
         <p id="eventTarget"> X </p>
