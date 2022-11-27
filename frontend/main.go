@@ -7,7 +7,12 @@ import (
 	"text/template"
 )
 
-type IndexHtmlData struct {
+/*type IndexHtmlData struct {
+	SseServerUrl      string
+	PicoBloggerApiUrl string
+}*/
+
+type ScriptTemplateData struct {
 	SseServerUrl      string
 	PicoBloggerApiUrl string
 }
@@ -25,12 +30,21 @@ func main() {
 	sseServerUrl := getEnv("SSESERVER", "https://emojisse-4uotx33u2a-uc.a.run.app/events")
 	picobloggerApiUrl := getEnv("PICOBLOGGER-API", "https://picoblogger-4uotx33u2a-uc.a.run.app/blogposts")
 
-	tmpl := template.Must(template.ParseFiles("templates/indexTemplate.html"))
+	tmpl := template.Must(template.ParseFiles("templates/sse-and-api-calls.js"))
 
-	//fs := http.FileServer(http.Dir("./static"))
-	//http.Handle("/", fs)
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		data := IndexHtmlData{
+	fs := http.FileServer(http.Dir("./static"))
+	http.Handle("/", fs)
+	/*
+		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+			data := IndexHtmlData{
+				SseServerUrl:      sseServerUrl,
+				PicoBloggerApiUrl: picobloggerApiUrl,
+			}
+			tmpl.Execute(w, data)
+		})*/
+
+	http.HandleFunc("/templates/sse-and-api-calls.js", func(w http.ResponseWriter, r *http.Request) {
+		data := ScriptTemplateData{
 			SseServerUrl:      sseServerUrl,
 			PicoBloggerApiUrl: picobloggerApiUrl,
 		}

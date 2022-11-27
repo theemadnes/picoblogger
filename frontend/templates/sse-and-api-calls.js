@@ -1,16 +1,5 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>picoBlogger dashboard</title>
-    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-auth-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.js" defer></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.css" />
-    <script>
-    
-    // basic load of posts
-    function getPosts() {
+// basic load of posts
+function getPosts() {
     let displayList = [];
 
     fetch("{{.PicoBloggerApiUrl}}")
@@ -83,12 +72,8 @@
     //frm.innerText = "";
     inputField = document.getElementById("postcontent");
     inputField.value = "";
-    };</script>
-    <script type="module" src="scripts/firebase-app.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.js" defer></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.css" />
-    <script type="text/javascript" src="scripts/firebase-ui.js" defer></script>
-    <script>
+    };
+    
     // https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
     const evtSource = new EventSource("{{.SseServerUrl}}", { withCredentials: false } );
 
@@ -115,19 +100,3 @@
     evtSource.onerror = (err) => {
     console.error("EventSource failed:", err);
     };
-    </script>
-    
-  </head>
-  <body>
-    
-    <form name="frm1" method="post" onsubmit="return false" onclick="submission(getPosts)">
-        <input type="text" id="postcontent" name="postcontent">
-        <input type="submit" value="Submit"></form>
-    <ul id="myList"></ul>
-    <div id="firebaseui-auth-container"></div>
-    <footer>
-        <p>If this page is working properly, below you should see an updating emoji every few seconds (by default):</p>
-        <p id="eventTarget"> X </p>
-      </footer>
-  </body>
-</html>
