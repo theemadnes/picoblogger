@@ -25,14 +25,29 @@ onAuthStateChanged(auth, (user) => {
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
       console.log("logged in");
-      document.getElementById('loginLink').textContent = "sign out";
+      document.getElementById('loginLink').innerHTML = '<a onclick="signOut()" href="#">sign out</a>';
       document.getElementById('firebaseui-auth-container').hidden = true;
+      // try to get rid of login prompt
+      /*try {
+        document.getElementById('firebaseui-auth-container').setAttribute('id', 'dummy');
+      }
+      catch(err) {
+        console.log("already logged in");
+    }*/
+      
       // ...
     } else {
       // User is signed out
       // ...
       console.log("not logged in");
-      document.getElementById('loginLink').textContent = "sign in";
+      document.getElementById('loginLink').textContent = "sign in below";
+      /*try {
+        document.getElementById('dummy').setAttribute('id', 'firebaseui-auth-container');
+      }
+      catch(err) {
+        console.log("not logged in");
+    }*/
+      
       document.getElementById('firebaseui-auth-container').hidden = false;
     }
   });

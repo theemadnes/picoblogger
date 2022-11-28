@@ -1,3 +1,5 @@
+//import { auth } from "../scripts/firebase-app-config";
+
 // basic load of posts
 function getPosts() {
     let displayList = [];
@@ -37,11 +39,19 @@ function getPosts() {
         console.log("Empty payload - not posting");
         return;
     }
-    //let payload = "12345";
-    //console.log(payload);
+
+    // get author email
+    let author = "alex"; // the default
+    try {
+        author = window.auth.currentUser.email;
+    } 
+    catch(err) {
+        console.log("not logged in so using default user `alex`");
+    }
+
     // create a JSON object
     const json = {
-        author: 'alex',
+        author: author,
         content: payload
     }
     var data = JSON.stringify(json);
