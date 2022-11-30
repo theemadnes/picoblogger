@@ -41,12 +41,12 @@ function getPosts() {
     }
 
     // get author email
-    let author = "alex"; // the default
+    let author = "anonymous"; // the default
     try {
         author = window.auth.currentUser.email;
     } 
     catch(err) {
-        console.log("not logged in so using default user `alex`");
+        console.log("not logged in so using default user `anonymous`");
     }
 
     // create a JSON object

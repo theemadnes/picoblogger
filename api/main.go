@@ -19,9 +19,9 @@ type blogpost struct {
 
 // albums slice to seed record album data.
 var blogposts = []blogpost{
-	{ID: "1", Author: "alex", Content: "this is my first post", Timestamp: time.Now()},
-	{ID: "2", Author: "alex", Content: "this is my second post", Timestamp: time.Now()},
-	{ID: "3", Author: "alex", Content: "this is my third post", Timestamp: time.Now()},
+	{ID: "1", Author: "anonymous", Content: "this is my first post", Timestamp: time.Now()},
+	{ID: "2", Author: "anonymous", Content: "this is my second post", Timestamp: time.Now()},
+	{ID: "3", Author: "anonymous", Content: "this is my third post", Timestamp: time.Now()},
 }
 
 // set default port number if env var $PORT isn't set
@@ -72,9 +72,9 @@ func main() {
 // base path handler - right now just using it to reset blog posts back to default
 func getBasepath(c *gin.Context) {
 	blogposts = []blogpost{
-		{ID: "1", Author: "alex", Content: "this is my first post", Timestamp: time.Now()},
-		{ID: "2", Author: "alex", Content: "this is my second post", Timestamp: time.Now()},
-		{ID: "3", Author: "alex", Content: "this is my third post", Timestamp: time.Now()},
+		{ID: "1", Author: "anonymous", Content: "this is my first post", Timestamp: time.Now()},
+		{ID: "2", Author: "anonymous", Content: "this is my second post", Timestamp: time.Now()},
+		{ID: "3", Author: "anonymous", Content: "this is my third post", Timestamp: time.Now()},
 	}
 	/*c.IndentedJSON(http.StatusOK, gin.H{
 		"hello": "base path",
